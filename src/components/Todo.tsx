@@ -22,6 +22,8 @@ const Todo: React.FC = () => {
           <TextInput
             name="todo-input"
             placeholder="Enter the task name..."
+            size={400}
+            height={32}
             width="100%"
           />
         </Pane>
