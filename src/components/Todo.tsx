@@ -19,13 +19,10 @@ const Todo: React.FC = observer(() => {
   const { store } = useTodosStore();
 
   useEffect(() => {
-    console.log('useEffect');
     autorun(() => {
-      console.log('autorun', store.todos);
-
       store.loadTodos();
     });
-  });
+  }, []);
 
   return (
     <TodoContainer>
