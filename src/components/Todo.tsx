@@ -22,7 +22,7 @@ const Todo: React.FC = observer(() => {
     autorun(() => {
       store.loadTodos();
     });
-  }, []);
+  }, [store]);
 
   return (
     <TodoContainer>
