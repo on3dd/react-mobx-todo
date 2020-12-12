@@ -11,7 +11,9 @@ export default class TodosStore {
   loadTodos = () => {
     fetchTodos().then((todos) => {
       console.log('todos', todos);
+
       this.todos = todos.data;
+
       console.log('this.todos', this.todos);
     });
   };

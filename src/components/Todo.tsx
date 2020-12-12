@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { autorun } from 'mobx';
+import { observer } from 'mobx-react-lite';
+
 import styled from 'styled-components';
 import { Pane, Heading, TextInput } from 'evergreen-ui';
+
+import { useTodosStore } from '../store/todos';
 
 import TodoList from './TodoList';
 
@@ -10,7 +15,18 @@ const TodoContainer = styled.section`
   margin-top: 50px;
 `;
 
-const Todo: React.FC = () => {
+const Todo: React.FC = observer(() => {
+  const { store } = useTodosStore();
+
+  useEffect(() => {
+    console.log('useEffect');
+    autorun(() => {
+      console.log('autorun', store.todos);
+
+      store.loadTodos();
+    });
+  });
+
   return (
     <TodoContainer>
       <Pane elevation={1} padding={16} background="white">
@@ -29,11 +45,11 @@ const Todo: React.FC = () => {
         </Pane>
 
         <Pane>
-          <TodoList />
+          <TodoList data={store.todos} />
         </Pane>
       </Pane>
     </TodoContainer>
   );
-};
+});
 
 export default Todo;
