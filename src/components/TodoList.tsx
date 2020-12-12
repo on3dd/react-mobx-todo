@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { autorun } from 'mobx';
+import { observer } from 'mobx-react-lite';
 import styled from 'styled-components';
 
-import { Todo } from '@react-mobx-todo';
+import { useTodosStore } from '../store/todos';
 
 import TodoItem from './TodoItem';
 
@@ -14,31 +16,32 @@ const Li = styled.li`
   list-style: none;
 `;
 
-const data: Todo[] = [
-  {
-    userId: 1,
-    id: 1,
-    title: 'delectus aut autem',
-    completed: false,
-  },
-  {
-    userId: 1,
-    id: 2,
-    title: 'quis ut nam facilis et officia qui',
-    completed: false,
-  },
-];
+const TodoList: React.FC = observer(() => {
+  const { store } = useTodosStore();
 
-const TodoList: React.FC = () => {
+  useEffect(() => {
+    console.log('useEffect');
+
+    autorun(() => {
+      console.log('autorun');
+
+      store.loadTodos();
+    });
+  }, [store]);
+
+  useEffect(() => {
+    console.log('store.todos.length', store.todos.length);
+  }, [store.todos.length]);
+
   return (
     <Ul>
-      {data.map((el) => (
+      {store.todos.map((el) => (
         <Li key={el.id}>
           <TodoItem data={el} />
         </Li>
       ))}
     </Ul>
   );
-};
+});
 
 export default TodoList;
