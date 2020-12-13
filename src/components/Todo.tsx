@@ -16,7 +16,6 @@ import TodoPlaceholder from './TodoPlaceholder';
 const TodoContainer = styled.section`
   width: 100%;
   max-width: 500px;
-  margin-top: 50px;
 `;
 
 const Todo: React.FC = observer(() => {

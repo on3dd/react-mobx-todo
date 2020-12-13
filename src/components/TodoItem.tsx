@@ -13,6 +13,8 @@ import { Todo, TodoDraft } from '@react-mobx-todo';
 
 import { trim } from '../utils/validations';
 
+import TodoModal from './TodoModal';
+
 type TodoItemProps = {
   data: Todo;
   updateTodo: ({ id, title }: TodoDraft) => void;
@@ -26,6 +28,8 @@ const TodoItem: React.FC<TodoItemProps> = ({
 }: TodoItemProps) => {
   const [title, setTitle] = useState(data.title);
   const [editing, setEditing] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const renderText = useMemo(() => {
     return <Text size={400}>{title}</Text>;
@@ -51,6 +55,10 @@ const TodoItem: React.FC<TodoItemProps> = ({
   }, [editing, renderTextInput, renderText]);
 
   const toggleEditing = () => setEditing((prev) => !prev);
+  const toggleVisible = () => setVisible((prev) => !prev);
+  const toggleDeleting = (value: boolean) => {
+    setDeleting(() => value);
+  };
 
   const onEditClick = () => {
     if (editing) {
@@ -63,38 +71,57 @@ const TodoItem: React.FC<TodoItemProps> = ({
   };
 
   const onDeleteClick = () => {
+    toggleVisible();
+  };
+
+  const onConfirm = () => {
+    toggleDeleting(true);
     deleteTodo({ id: data.id });
   };
 
+  const onCloseComplete = () => {
+    toggleVisible();
+    toggleDeleting(false);
+  };
+
   return (
-    <Card
-      display="flex"
-      alignItems="center"
-      justify-content="space-between"
-      border="default"
-      padding={8}
-      marginBottom={8}
-    >
-      <Pane display="flex" flex="1">
-        {renderView}
-      </Pane>
+    <>
+      <Card
+        display="flex"
+        alignItems="center"
+        justify-content="space-between"
+        border="default"
+        padding={8}
+        marginBottom={8}
+      >
+        <Pane display="flex" flex="1">
+          {renderView}
+        </Pane>
 
-      <Pane display="flex" marginLeft={8}>
-        <IconButton
-          icon={EditIcon}
-          height={24}
-          marginRight={8}
-          onClick={onEditClick}
-        />
+        <Pane display="flex" marginLeft={8}>
+          <IconButton
+            icon={EditIcon}
+            height={24}
+            marginRight={8}
+            onClick={onEditClick}
+          />
 
-        <IconButton
-          icon={TrashIcon}
-          height={24}
-          intent="danger"
-          onClick={onDeleteClick}
-        />
-      </Pane>
-    </Card>
+          <IconButton
+            icon={TrashIcon}
+            height={24}
+            intent="danger"
+            onClick={onDeleteClick}
+          />
+        </Pane>
+      </Card>
+
+      <TodoModal
+        visible={visible}
+        deleting={deleting}
+        onConfirm={onConfirm}
+        onCloseComplete={onCloseComplete}
+      />
+    </>
   );
 };
 
