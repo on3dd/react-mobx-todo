@@ -7,6 +7,7 @@ declare module '@react-mobx-todo' {
   }
 
   export interface TodoDraft {
-    title: string;
+    id?: number;
+    title?: string;
   }
 }

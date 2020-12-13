@@ -20,3 +20,12 @@ export const createTodo = async (
     completed: API_PARAMS.completed,
   });
 };
+
+export const updateTodo = async (
+  id: number,
+  title: string,
+): Promise<AxiosResponse<Todo>> => {
+  return await axiosService.patch(API_ENDPOINTS.todos.id(id), {
+    title,
+  });
+};

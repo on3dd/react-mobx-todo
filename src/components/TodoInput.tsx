@@ -4,13 +4,15 @@ import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { Pane, TextInput, Button } from 'evergreen-ui';
 
+import { TodoDraft } from '@react-mobx-todo';
+
 const Form = styled.form`
   width: 100%;
 `;
 
 type TodoInputProps = {
   disabled: boolean;
-  onSubmit: (...args: any[]) => void;
+  onSubmit: ({ title }: TodoDraft) => void;
 };
 
 const TodoInput: React.FC<TodoInputProps> = ({

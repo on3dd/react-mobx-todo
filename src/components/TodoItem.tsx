@@ -1,22 +1,61 @@
-import React from 'react';
+import React, { useState, useMemo, ChangeEvent } from 'react';
 import {
   Card,
   Pane,
   Text,
+  TextInput,
   IconButton,
   EditIcon,
   TrashIcon,
 } from 'evergreen-ui';
 
-import { Todo } from '@react-mobx-todo';
+import { Todo, TodoDraft } from '@react-mobx-todo';
 
 type TodoItemProps = {
   data: Todo;
+  updateTodo: ({ id, title }: TodoDraft) => void;
 };
 
 const TodoItem: React.FC<TodoItemProps> = ({
   data,
+  updateTodo,
 }: TodoItemProps) => {
+  const [title, setTitle] = useState(data.title);
+  const [editing, setEditing] = useState(false);
+
+  const renderText = useMemo(() => {
+    return <Text size={400}>{title}</Text>;
+  }, [title]);
+
+  const renderTextInput = useMemo(() => {
+    const onChange = (evt: ChangeEvent<HTMLInputElement>) => {
+      setTitle(evt.target.value);
+    };
+
+    return (
+      <TextInput
+        value={title}
+        spellCheck={true}
+        width="100%"
+        onChange={onChange}
+      />
+    );
+  }, [title]);
+
+  const renderView = useMemo(() => {
+    return editing ? renderTextInput : renderText;
+  }, [editing, renderTextInput, renderText]);
+
+  const toggleEditing = () => setEditing((prev) => !prev);
+
+  const onEditClick = () => {
+    if (editing) {
+      updateTodo({ id: data.id, title });
+    }
+
+    toggleEditing();
+  };
+
   return (
     <Card
       display="flex"
@@ -27,11 +66,17 @@ const TodoItem: React.FC<TodoItemProps> = ({
       marginBottom={8}
     >
       <Pane display="flex" flex="1">
-        <Text size={400}>{data.title}</Text>
+        {renderView}
       </Pane>
 
-      <Pane display="flex">
-        <IconButton icon={EditIcon} height={24} marginRight={8} />
+      <Pane display="flex" marginLeft={8}>
+        <IconButton
+          icon={EditIcon}
+          height={24}
+          marginRight={8}
+          onClick={onEditClick}
+        />
+
         <IconButton icon={TrashIcon} height={24} intent="danger" />
       </Pane>
     </Card>

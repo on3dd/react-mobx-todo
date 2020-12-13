@@ -28,20 +28,27 @@ const Todo: React.FC = observer(() => {
     });
   }, [store]);
 
-  const renderView = useMemo(() => {
-    return store.fetching ? (
-      <TodoPlaceholder />
-    ) : (
-      <TodoList data={store.todos} />
-    );
-  }, [store.fetching, store.todos]);
-
   const createTodo = useCallback(
-    ({ title }: TodoDraft) => {
+    ({ title = '' }: TodoDraft) => {
       store.createTodo(title);
     },
     [store],
   );
+
+  const updateTodo = useCallback(
+    ({ id = 0, title = '' }: TodoDraft) => {
+      store.updateTodo(id, title);
+    },
+    [store],
+  );
+
+  const renderView = useMemo(() => {
+    return store.fetching ? (
+      <TodoPlaceholder />
+    ) : (
+      <TodoList data={store.todos} updateTodo={updateTodo} />
+    );
+  }, [store.fetching, store.todos, updateTodo]);
 
   return (
     <TodoContainer>
