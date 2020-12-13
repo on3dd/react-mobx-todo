@@ -42,13 +42,24 @@ const Todo: React.FC = observer(() => {
     [store],
   );
 
+  const deleteTodo = useCallback(
+    ({ id = 0 }: TodoDraft) => {
+      store.deleteTodo(id);
+    },
+    [store],
+  );
+
   const renderView = useMemo(() => {
     return store.fetching ? (
       <TodoPlaceholder />
     ) : (
-      <TodoList data={store.todos} updateTodo={updateTodo} />
+      <TodoList
+        data={store.todos}
+        updateTodo={updateTodo}
+        deleteTodo={deleteTodo}
+      />
     );
-  }, [store.fetching, store.todos, updateTodo]);
+  }, [store.fetching, store.todos, updateTodo, deleteTodo]);
 
   return (
     <TodoContainer>

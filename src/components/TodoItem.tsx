@@ -14,11 +14,13 @@ import { Todo, TodoDraft } from '@react-mobx-todo';
 type TodoItemProps = {
   data: Todo;
   updateTodo: ({ id, title }: TodoDraft) => void;
+  deleteTodo: ({ id }: TodoDraft) => void;
 };
 
 const TodoItem: React.FC<TodoItemProps> = ({
   data,
   updateTodo,
+  deleteTodo,
 }: TodoItemProps) => {
   const [title, setTitle] = useState(data.title);
   const [editing, setEditing] = useState(false);
@@ -56,6 +58,10 @@ const TodoItem: React.FC<TodoItemProps> = ({
     toggleEditing();
   };
 
+  const onDeleteClick = () => {
+    deleteTodo({ id: data.id });
+  };
+
   return (
     <Card
       display="flex"
@@ -77,7 +83,12 @@ const TodoItem: React.FC<TodoItemProps> = ({
           onClick={onEditClick}
         />
 
-        <IconButton icon={TrashIcon} height={24} intent="danger" />
+        <IconButton
+          icon={TrashIcon}
+          height={24}
+          intent="danger"
+          onClick={onDeleteClick}
+        />
       </Pane>
     </Card>
   );

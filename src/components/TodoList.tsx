@@ -17,18 +17,24 @@ const Li = styled.li`
 type TodoListProps = {
   data: Todo[];
   updateTodo: ({ id, title }: TodoDraft) => void;
+  deleteTodo: ({ id }: TodoDraft) => void;
 };
 
 const TodoList: React.FC<TodoListProps> = ({
   data,
   updateTodo,
+  deleteTodo,
 }: TodoListProps) => (
   <Ul>
     {data.map((el) => (
       // using the title as a key because the IDs can be duplicates
       // see https://jsonplaceholder.typicode.com/guide/
       <Li key={el.title}>
-        <TodoItem data={el} updateTodo={updateTodo} />
+        <TodoItem
+          data={el}
+          updateTodo={updateTodo}
+          deleteTodo={deleteTodo}
+        />
       </Li>
     ))}
   </Ul>

@@ -2,7 +2,12 @@ import { makeObservable, observable, action, toJS } from 'mobx';
 
 import { Todo } from '@react-mobx-todo';
 
-import { fetchTodos, createTodo, updateTodo } from '../../api/todos';
+import {
+  fetchTodos,
+  createTodo,
+  updateTodo,
+  deleteTodo,
+} from '../../api/todos';
 
 export default class TodosStore {
   todos: Todo[] = [];
@@ -44,6 +49,18 @@ export default class TodosStore {
     this.todos = this.todos.map((el) => {
       return el.id === data.id ? data : el;
     });
+
+    console.log('this.todos', toJS(this.todos));
+  }
+
+  async deleteTodo(id: number) {
+    await deleteTodo(id);
+
+    const data = this.todos.find((el) => el.id === id) as Todo;
+
+    console.log('deleted todo', data);
+
+    this.todos = this.todos.filter((el) => el.id !== data.id);
 
     console.log('this.todos', toJS(this.todos));
   }
