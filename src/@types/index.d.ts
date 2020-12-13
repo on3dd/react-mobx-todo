@@ -5,4 +5,8 @@ declare module '@react-mobx-todo' {
     title: string;
     completed: boolean;
   }
+
+  export interface TodoDraft {
+    title: string;
+  }
 }

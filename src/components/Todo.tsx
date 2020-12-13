@@ -1,13 +1,15 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useCallback } from 'react';
 import { autorun } from 'mobx';
 import { observer } from 'mobx-react-lite';
 
 import styled from 'styled-components';
 import { Pane, Heading } from 'evergreen-ui';
 
+import { TodoDraft } from '@react-mobx-todo';
+
 import { useTodosStore } from '../store/todos';
 
-import TodoSearch from './TodoSearch';
+import TodoInput from './TodoInput';
 import TodoList from './TodoList';
 import TodoPlaceholder from './TodoPlaceholder';
 
@@ -21,8 +23,8 @@ const Todo: React.FC = observer(() => {
   const { store } = useTodosStore();
 
   useEffect(() => {
-    autorun(async () => {
-      await store.loadTodos();
+    autorun(() => {
+      store.fetchTodos();
     });
   }, [store]);
 
@@ -34,6 +36,13 @@ const Todo: React.FC = observer(() => {
     );
   }, [store.fetching, store.todos]);
 
+  const createTodo = useCallback(
+    ({ title }: TodoDraft) => {
+      store.createTodo(title);
+    },
+    [store],
+  );
+
   return (
     <TodoContainer>
       <Pane elevation={1} padding={16} background="white">
@@ -42,7 +51,10 @@ const Todo: React.FC = observer(() => {
         </Pane>
 
         <Pane display="flex" marginBottom={16}>
-          <TodoSearch disabled={store.fetching} />
+          <TodoInput
+            disabled={store.fetching}
+            onSubmit={createTodo}
+          />
         </Pane>
 
         <Pane>{renderView}</Pane>

@@ -2,7 +2,7 @@ import { makeObservable, observable, action } from 'mobx';
 
 import { Todo } from '@react-mobx-todo';
 
-import { fetchTodos } from '../../api/todos';
+import { fetchTodos, createTodo } from '../../api/todos';
 
 export default class TodosStore {
   todos: Todo[] = [];
@@ -12,11 +12,11 @@ export default class TodosStore {
     makeObservable(this, {
       todos: observable,
       fetching: observable,
-      loadTodos: action,
+      fetchTodos: action,
     });
   }
 
-  async loadTodos() {
+  async fetchTodos() {
     this.toggleFetching();
 
     const res = await fetchTodos();
@@ -24,6 +24,14 @@ export default class TodosStore {
     this.todos = res.data;
 
     this.toggleFetching();
+  }
+
+  async createTodo(title: string) {
+    const res = await createTodo(title);
+
+    console.log('created todo', res.data);
+
+    this.todos = [...this.todos, res.data];
   }
 
   private toggleFetching() {
