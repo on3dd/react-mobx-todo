@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/react-mobx-todo/static/js/main.c121c745.chunk.js",
-    "main.js.map": "/react-mobx-todo/static/js/main.c121c745.chunk.js.map",
+    "main.js": "/react-mobx-todo/static/js/main.f17553a8.chunk.js",
+    "main.js.map": "/react-mobx-todo/static/js/main.f17553a8.chunk.js.map",
     "runtime-main.js": "/react-mobx-todo/static/js/runtime-main.457ef33f.js",
     "runtime-main.js.map": "/react-mobx-todo/static/js/runtime-main.457ef33f.js.map",
     "static/js/2.362206d3.chunk.js": "/react-mobx-todo/static/js/2.362206d3.chunk.js",
@@ -12,6 +12,6 @@
   "entrypoints": [
     "static/js/runtime-main.457ef33f.js",
     "static/js/2.362206d3.chunk.js",
-    "static/js/main.c121c745.chunk.js"
+    "static/js/main.f17553a8.chunk.js"
   ]
 }
