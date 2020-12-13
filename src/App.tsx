@@ -8,10 +8,6 @@ import Todo from './components/Todo';
 const AppContainer = styled.div`
   display: flex;
   justify-content: center;
-  padding: 1rem;
-  min-width: 100vw;
-  min-height: 100vh;
-  background-color: #fafafa;
 `;
 
 const App: React.FC = () => {

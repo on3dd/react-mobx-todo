@@ -27,12 +27,17 @@ const TodoItem: React.FC<TodoItemProps> = ({
       marginBottom={8}
     >
       <Pane display="flex" flex="1">
-        <Text size={500}>{data.title}</Text>
+        <Text size={400}>{data.title}</Text>
       </Pane>
 
       <Pane display="flex">
-        <IconButton icon={EditIcon} />
-        <IconButton icon={TrashIcon} intent="danger" marginLeft={8} />
+        <IconButton icon={EditIcon} height={24} />
+        <IconButton
+          icon={TrashIcon}
+          intent="danger"
+          height={24}
+          marginLeft={8}
+        />
       </Pane>
     </Card>
   );

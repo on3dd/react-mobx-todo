@@ -3,10 +3,11 @@ import { autorun } from 'mobx';
 import { observer } from 'mobx-react-lite';
 
 import styled from 'styled-components';
-import { Pane, Heading, TextInput } from 'evergreen-ui';
+import { Pane, Heading } from 'evergreen-ui';
 
 import { useTodosStore } from '../store/todos';
 
+import TodoSearch from './TodoSearch';
 import TodoList from './TodoList';
 
 const TodoContainer = styled.section`
@@ -31,14 +32,8 @@ const Todo: React.FC = observer(() => {
           <Heading size={800}>Todo List</Heading>
         </Pane>
 
-        <Pane marginBottom={16}>
-          <TextInput
-            name="todo-input"
-            placeholder="Enter the task name..."
-            size={400}
-            height={32}
-            width="100%"
-          />
+        <Pane display="flex" marginBottom={16}>
+          <TodoSearch />
         </Pane>
 
         <Pane>
