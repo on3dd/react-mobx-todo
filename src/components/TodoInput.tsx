@@ -15,18 +15,22 @@ const Form = styled.form`
   width: 100%;
 `;
 
+const defaultValuesFactory = () => {
+  return { title: '' };
+};
+
 const TodoInput: React.FC<TodoInputProps> = ({
   disabled,
   onSubmit,
 }: TodoInputProps) => {
   const { register, handleSubmit, reset } = useForm({
-    defaultValues: { title: '' },
+    defaultValues: defaultValuesFactory(),
   });
 
   const submit = useCallback(
     ({ title }: TodoDraft) => {
       onSubmit({ title });
-      reset({ title: '' });
+      reset(defaultValuesFactory());
     },
     [onSubmit, reset],
   );
