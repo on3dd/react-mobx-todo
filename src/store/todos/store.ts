@@ -3,10 +3,11 @@ import {
   observable,
   action,
   runInAction,
-  toJS,
 } from 'mobx';
 
 import { Todo } from '@react-mobx-todo';
+
+import Store from '../store';
 
 import {
   fetchTodos,
@@ -15,11 +16,13 @@ import {
   deleteTodo,
 } from '../../api/todos';
 
-export default class TodosStore {
+export default class TodosStore extends Store {
   todos: Todo[] = [];
   fetching: boolean = false;
 
   constructor() {
+    super();
+
     makeObservable(this, {
       todos: observable,
       fetching: observable,
@@ -43,43 +46,55 @@ export default class TodosStore {
   }
 
   async createTodo(title: string) {
-    const { data } = await createTodo(title);
+    try {
+      const { data } = await createTodo(title);
 
-    console.log('created todo', data);
+      runInAction(() => {
+        this.todos = [...this.todos, data];
+      });
 
-    runInAction(() => {
-      this.todos = [...this.todos, data];
-    });
+      this.success('Item added successfully!');
+    } catch (err: unknown) {
+      console.error(err);
 
-    console.log('this.todos', toJS(this.todos));
+      this.danger('Error while adding item!');
+    }
   }
 
   async updateTodo(id: number, title: string) {
-    const { data } = await updateTodo(id, title);
+    try {
+      const { data } = await updateTodo(id, title);
 
-    console.log('updated todo', data);
-
-    runInAction(() => {
-      this.todos = this.todos.map((el) => {
-        return el.id === data.id ? data : el;
+      runInAction(() => {
+        this.todos = this.todos.map((el) => {
+          return el.id === data.id ? data : el;
+        });
       });
-    });
 
-    console.log('this.todos', toJS(this.todos));
+      this.success('Item updated successfully!');
+    } catch (err: unknown) {
+      console.error(err);
+
+      this.danger('Error while updating item!');
+    }
   }
 
   async deleteTodo(id: number) {
-    await deleteTodo(id);
+    try {
+      await deleteTodo(id);
 
-    const data = this.todos.find((el) => el.id === id) as Todo;
+      const data = this.todos.find((el) => el.id === id) as Todo;
 
-    console.log('deleted todo', toJS(data));
+      runInAction(() => {
+        this.todos = this.todos.filter((el) => el.id !== data.id);
+      });
 
-    runInAction(() => {
-      this.todos = this.todos.filter((el) => el.id !== data.id);
-    });
+      this.success('Item deleted successfully!');
+    } catch (err: unknown) {
+      console.error(err);
 
-    console.log('this.todos', toJS(this.todos));
+      this.danger('Error while deleting item!');
+    }
   }
 
   private toggleFetching() {
