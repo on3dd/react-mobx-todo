@@ -23,7 +23,9 @@ const TodoList: React.FC<TodoListProps> = ({
 }: TodoListProps) => (
   <Ul>
     {data.map((el) => (
-      <Li key={el.id}>
+      // using the title as a key because the IDs can be duplicates
+      // see https://jsonplaceholder.typicode.com/guide/
+      <Li key={el.title}>
         <TodoItem data={el} />
       </Li>
     ))}
