@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { autorun } from 'mobx';
 import { observer } from 'mobx-react-lite';
 
@@ -9,6 +9,7 @@ import { useTodosStore } from '../store/todos';
 
 import TodoSearch from './TodoSearch';
 import TodoList from './TodoList';
+import TodoPlaceholder from './TodoPlaceholder';
 
 const TodoContainer = styled.section`
   width: 100%;
@@ -20,10 +21,18 @@ const Todo: React.FC = observer(() => {
   const { store } = useTodosStore();
 
   useEffect(() => {
-    autorun(() => {
-      store.loadTodos();
+    autorun(async () => {
+      await store.loadTodos();
     });
   }, [store]);
+
+  const renderView = useMemo(() => {
+    return store.fetching ? (
+      <TodoPlaceholder />
+    ) : (
+      <TodoList data={store.todos} />
+    );
+  }, [store.fetching, store.todos]);
 
   return (
     <TodoContainer>
@@ -33,12 +42,10 @@ const Todo: React.FC = observer(() => {
         </Pane>
 
         <Pane display="flex" marginBottom={16}>
-          <TodoSearch />
+          <TodoSearch disabled={store.fetching} />
         </Pane>
 
-        <Pane>
-          <TodoList data={store.todos} />
-        </Pane>
+        <Pane>{renderView}</Pane>
       </Pane>
     </TodoContainer>
   );

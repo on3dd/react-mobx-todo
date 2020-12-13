@@ -6,17 +6,27 @@ import { fetchTodos } from '../../api/todos';
 
 export default class TodosStore {
   todos: Todo[] = [];
+  fetching: boolean = false;
 
   constructor() {
     makeObservable(this, {
       todos: observable,
+      fetching: observable,
       loadTodos: action,
     });
   }
 
-  loadTodos = () => {
-    fetchTodos().then((todos) => {
-      this.todos = todos.data;
-    });
-  };
+  async loadTodos() {
+    this.toggleFetching();
+
+    const res = await fetchTodos();
+
+    this.todos = res.data;
+
+    this.toggleFetching();
+  }
+
+  private toggleFetching() {
+    this.fetching = !this.fetching;
+  }
 }

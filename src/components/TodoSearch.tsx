@@ -1,7 +1,13 @@
 import React from 'react';
 import { TextInput, Button } from 'evergreen-ui';
 
-const TodoSearch: React.FC = () => {
+type TodoSearchProps = {
+  disabled: boolean;
+};
+
+const TodoSearch: React.FC<TodoSearchProps> = ({
+  disabled,
+}: TodoSearchProps) => {
   return (
     <>
       <TextInput
@@ -10,8 +16,10 @@ const TodoSearch: React.FC = () => {
         size={400}
         height={32}
         width="100%"
+        disabled={disabled}
       />
-      <Button marginLeft={8} appearance="primary">
+
+      <Button marginLeft={8} appearance="primary" disabled={disabled}>
         Add
       </Button>
     </>
