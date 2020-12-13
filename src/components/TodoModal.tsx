@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Pane, Dialog } from 'evergreen-ui';
+import { Portal, Dialog } from 'evergreen-ui';
 
 type TodoModalProps = {
   visible: boolean;
@@ -15,11 +15,11 @@ const TodoModal: React.FC<TodoModalProps> = ({
   onCloseComplete,
 }: TodoModalProps) => {
   const confirmLabel = useMemo(() => {
-    return deleting ? 'Deliting...' : 'Delete Something';
+    return deleting ? 'Deliting...' : 'Delete';
   }, [deleting]);
 
   return (
-    <Pane>
+    <Portal>
       <Dialog
         intent="danger"
         title="Are you sure?"
@@ -32,7 +32,7 @@ const TodoModal: React.FC<TodoModalProps> = ({
         Do you really want to delete this item? This action cannot be
         undone.
       </Dialog>
-    </Pane>
+    </Portal>
   );
 };
 
