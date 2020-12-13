@@ -21,7 +21,7 @@ const TodoInput: React.FC<TodoInputProps> = ({
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <Pane display="flex" width="100%">
+      <Pane display="flex" width="100%" marginBottom={8}>
         <TextInput
           name="title"
           placeholder="Enter the task name..."
@@ -29,7 +29,7 @@ const TodoInput: React.FC<TodoInputProps> = ({
           height={32}
           width="100%"
           disabled={disabled}
-          ref={register}
+          ref={register({ required: true })}
         />
 
         <Button

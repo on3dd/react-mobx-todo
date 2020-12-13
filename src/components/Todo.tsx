@@ -50,7 +50,7 @@ const Todo: React.FC = observer(() => {
           <Heading size={800}>Todo List</Heading>
         </Pane>
 
-        <Pane display="flex" marginBottom={16}>
+        <Pane marginBottom={16}>
           <TodoInput
             disabled={store.fetching}
             onSubmit={createTodo}
