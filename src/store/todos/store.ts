@@ -19,30 +19,31 @@ export default class TodosStore {
   async fetchTodos() {
     this.toggleFetching();
 
-    const res = await fetchTodos();
+    const { data } = await fetchTodos();
 
-    this.todos = res.data;
+    this.todos = data;
 
     this.toggleFetching();
   }
 
   async createTodo(title: string) {
-    const res = await createTodo(title);
+    const { data } = await createTodo(title);
 
-    console.log('created todo', res.data);
+    console.log('created todo', data);
 
-    this.todos = [...this.todos, res.data];
+    this.todos = [...this.todos, data];
 
     console.log('this.todos', toJS(this.todos));
   }
 
   async updateTodo(id: number, title: string) {
-    const res = await updateTodo(id, title);
+    const { data } = await updateTodo(id, title);
 
-    console.log('updated todo', res.data);
+    console.log('updated todo', data);
 
-    const idx = this.todos.findIndex((el) => el.id === res.data.id);
-    this.todos.splice(idx, 1, res.data);
+    this.todos = this.todos.map((el) => {
+      return el.id === data.id ? data : el;
+    });
 
     console.log('this.todos', toJS(this.todos));
   }
