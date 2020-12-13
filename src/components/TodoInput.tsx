@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 
 import styled from 'styled-components';
@@ -6,23 +6,33 @@ import { Pane, TextInput, Button } from 'evergreen-ui';
 
 import { TodoDraft } from '@react-mobx-todo';
 
-const Form = styled.form`
-  width: 100%;
-`;
-
 type TodoInputProps = {
   disabled: boolean;
   onSubmit: ({ title }: TodoDraft) => void;
 };
 
+const Form = styled.form`
+  width: 100%;
+`;
+
 const TodoInput: React.FC<TodoInputProps> = ({
   disabled,
   onSubmit,
 }: TodoInputProps) => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm({
+    defaultValues: { title: '' },
+  });
+
+  const submit = useCallback(
+    ({ title }: TodoDraft) => {
+      onSubmit({ title });
+      reset({ title: '' });
+    },
+    [onSubmit, reset],
+  );
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(submit)}>
       <Pane display="flex" width="100%" marginBottom={8}>
         <TextInput
           name="title"
