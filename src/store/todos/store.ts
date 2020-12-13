@@ -1,4 +1,10 @@
-import { makeObservable, observable, action, toJS } from 'mobx';
+import {
+  makeObservable,
+  observable,
+  action,
+  runInAction,
+  toJS,
+} from 'mobx';
 
 import { Todo } from '@react-mobx-todo';
 
@@ -18,6 +24,9 @@ export default class TodosStore {
       todos: observable,
       fetching: observable,
       fetchTodos: action,
+      createTodo: action,
+      updateTodo: action,
+      deleteTodo: action,
     });
   }
 
@@ -26,7 +35,9 @@ export default class TodosStore {
 
     const { data } = await fetchTodos();
 
-    this.todos = data;
+    runInAction(() => {
+      this.todos = data;
+    });
 
     this.toggleFetching();
   }
@@ -36,7 +47,9 @@ export default class TodosStore {
 
     console.log('created todo', data);
 
-    this.todos = [...this.todos, data];
+    runInAction(() => {
+      this.todos = [...this.todos, data];
+    });
 
     console.log('this.todos', toJS(this.todos));
   }
@@ -46,8 +59,10 @@ export default class TodosStore {
 
     console.log('updated todo', data);
 
-    this.todos = this.todos.map((el) => {
-      return el.id === data.id ? data : el;
+    runInAction(() => {
+      this.todos = this.todos.map((el) => {
+        return el.id === data.id ? data : el;
+      });
     });
 
     console.log('this.todos', toJS(this.todos));
@@ -58,14 +73,18 @@ export default class TodosStore {
 
     const data = this.todos.find((el) => el.id === id) as Todo;
 
-    console.log('deleted todo', data);
+    console.log('deleted todo', toJS(data));
 
-    this.todos = this.todos.filter((el) => el.id !== data.id);
+    runInAction(() => {
+      this.todos = this.todos.filter((el) => el.id !== data.id);
+    });
 
     console.log('this.todos', toJS(this.todos));
   }
 
   private toggleFetching() {
-    this.fetching = !this.fetching;
+    runInAction(() => {
+      this.fetching = !this.fetching;
+    });
   }
 }
