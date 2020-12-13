@@ -12,7 +12,6 @@ const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     padding: 1rem;
-    min-width: 100vw;
     min-height: 100vh;
     background-color: #fafafa;
   }
