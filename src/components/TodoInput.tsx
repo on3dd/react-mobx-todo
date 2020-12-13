@@ -6,6 +6,8 @@ import { Pane, TextInput, Button } from 'evergreen-ui';
 
 import { TodoDraft } from '@react-mobx-todo';
 
+import { trim } from '../utils/validations';
+
 type TodoInputProps = {
   disabled: boolean;
   onSubmit: ({ title }: TodoDraft) => void;
@@ -28,7 +30,7 @@ const TodoInput: React.FC<TodoInputProps> = ({
   });
 
   const submit = useCallback(
-    ({ title }: TodoDraft) => {
+    ({ title = '' }: TodoDraft) => {
       onSubmit({ title });
       reset(defaultValuesFactory());
     },
@@ -45,7 +47,10 @@ const TodoInput: React.FC<TodoInputProps> = ({
           height={32}
           width="100%"
           disabled={disabled}
-          ref={register({ required: true })}
+          ref={register({
+            required: true,
+            validate: trim,
+          })}
         />
 
         <Button

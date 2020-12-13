@@ -11,6 +11,8 @@ import {
 
 import { Todo, TodoDraft } from '@react-mobx-todo';
 
+import { trim } from '../utils/validations';
+
 type TodoItemProps = {
   data: Todo;
   updateTodo: ({ id, title }: TodoDraft) => void;
@@ -52,7 +54,9 @@ const TodoItem: React.FC<TodoItemProps> = ({
 
   const onEditClick = () => {
     if (editing) {
-      updateTodo({ id: data.id, title });
+      trim(title)
+        ? updateTodo({ id: data.id, title })
+        : setTitle(data.title);
     }
 
     toggleEditing();
