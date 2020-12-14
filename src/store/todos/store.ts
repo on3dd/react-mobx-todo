@@ -7,7 +7,7 @@ import {
 
 import { Todo } from '@react-mobx-todo';
 
-import Store from '../store';
+import Toaster from '../../utils/toaster';
 
 import {
   fetchTodos,
@@ -16,12 +16,14 @@ import {
   deleteTodo,
 } from '../../api/todos';
 
-export default class TodosStore extends Store {
+export default class TodosStore {
   todos: Todo[] = [];
   fetching: boolean = false;
 
+  private toaster: Toaster;
+
   constructor() {
-    super();
+    this.toaster = new Toaster();
 
     makeObservable(this, {
       todos: observable,
@@ -53,11 +55,11 @@ export default class TodosStore extends Store {
         this.todos = [...this.todos, data];
       });
 
-      this.success('Item added successfully!');
+      this.toaster.success('Item added successfully!');
     } catch (err: unknown) {
       console.error(err);
 
-      this.danger('Error while adding item!');
+      this.toaster.danger('Error while adding item!');
     }
   }
 
@@ -71,11 +73,11 @@ export default class TodosStore extends Store {
         });
       });
 
-      this.success('Item updated successfully!');
+      this.toaster.success('Item updated successfully!');
     } catch (err: unknown) {
       console.error(err);
 
-      this.danger('Error while updating item!');
+      this.toaster.danger('Error while updating item!');
     }
   }
 
@@ -89,11 +91,11 @@ export default class TodosStore extends Store {
         this.todos = this.todos.filter((el) => el.id !== data.id);
       });
 
-      this.success('Item deleted successfully!');
+      this.toaster.success('Item deleted successfully!');
     } catch (err: unknown) {
       console.error(err);
 
-      this.danger('Error while deleting item!');
+      this.toaster.danger('Error while deleting item!');
     }
   }
 
