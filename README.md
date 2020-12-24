@@ -1,5 +1,5 @@
 # [react mobx todo](https://github.com/on3dd/react-mobx-todo)
-✔️ Simple todo app using React, MobX, TypeScript, React Hook Form, Styled components and Evergreen UI (in progress)
+✔️ Simple todo app using React, MobX, TypeScript, React Hook Form, Styled components and Evergreen UI
 
 ## tech stack
 - react 17.0
@@ -40,6 +40,6 @@ npm install
 ## how to start work with app
 
 go to created folder and run:
-`yarn start` || `npm run start` — this will start dev server with hot reload on `localhost:10888`.
+`yarn start` || `npm run start` — this will start dev server with hot reload on `localhost:3000`.
 
 `yarn build` || `npm run build` — this will build production bundle, with tree-shaking, uglify and all this modern fancy stuff
